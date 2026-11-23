@@ -1,0 +1,29 @@
+# codebase-measure-kit -- dependencies
+#
+# The MEASURE stage is deliberately LIGHT: no scientific stack, no boto3, no LLM SDK. The only
+# third-party requirements are two real parsers -- one for code, one for CI configuration.
+#
+# Python 3.10 or newer, plus (outside pip):
+#   * git on PATH -- read-only; git_stats.py / git_history.py / this script invoke it with fixed
+#     argument lists and never a shell.
+#   * for --build only: whatever build toolchain the target repo already declares (npm, pip, go,
+#     maven, cargo, bundler, composer). Project commands run in the target checkout; use a clean,
+#     disposable clone or worktree. NOT needed on the default (no-build) path.
+#   * for the model-assisted lanes, which always run: `claude` (default), `codex`, or `gemini` on
+#     PATH and authenticated with an approved provider. There is no offline mode: a report without
+#     the mining counts cannot be scored, so the intake system refuses it at upload.
+
+# code_structure.py attributes decision points to individual functions, which needs real function
+# boundaries -- a regex cannot tell where one function ends and the next begins. Both are wheels on
+# common platforms, so installation normally needs no compiler. If the parser is unavailable the
+# structure block is reported unscored (its `error` field) rather than crashing the run.
+tree-sitter==0.26.0
+tree-sitter-language-pack==1.13.5
+
+# repo_stats.py reads what CI actually RUNS -- the jobs, the steps, the `if:` guards -- rather
+# than grepping the workflow text for the word "test", which was wrong in both directions
+# (false negative on `./gradlew build`, false positive on a lint job named "test"). CI systems
+# require their config to be valid YAML, so a parser is the correct reader. The import is
+# guarded: without PyYAML the ci_runs_* flags are reported NULL with `ci_analysis_method:
+# parser_unavailable`, never guessed.
+PyYAML==6.0.3
