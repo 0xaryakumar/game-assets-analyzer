@@ -16,7 +16,7 @@ Measures one git repository **on your own machine** and writes a small set of nu
 Clone this repo straight into your Claude skills folder, using this exact folder name:
 
 ```bash
-git clone <THIS-REPO-URL> ~/.claude/skills/repo-quality-evaluation-measure-ext
+git clone https://github.com/0xaryakumar/game-assets-analyzer.git ~/.claude/skills/repo-quality-evaluation-measure-ext
 pip install -r ~/.claude/skills/repo-quality-evaluation-measure-ext/requirements.txt
 ```
 
